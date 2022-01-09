@@ -1,13 +1,14 @@
 import { TextEditor } from "cms/dist/editor/editors/textEditor";
 import { VisualBlockEditor } from "cms/dist/editor/editors/visualBlockEditor";
-import { IItemTypeConfig } from "cms/dist/shared/types/itemTypeConfig";
+import { IItemTypeConfig } from "cms/dist/types/itemTypeConfig";
 import { postsRepo } from "../db";
-import { IPost, IPostMinimal } from "../types/post";
+import { ICreateOrUpdatePost, IPost } from "../types/post";
 
-export const postItemType: IItemTypeConfig<IPostMinimal, IPost> = { 
+export const postItemType: IItemTypeConfig<IPost, ICreateOrUpdatePost> = { 
     name: ["post", "posts"], 
 
     getItem: postsRepo.getOne,
+    getItemForEditing: postsRepo.getOneForEditing,
     getItems: postsRepo.getAll,
     createItem: postsRepo.create,
     updateItem: postsRepo.update, 
@@ -18,10 +19,13 @@ export const postItemType: IItemTypeConfig<IPostMinimal, IPost> = {
     getLabel: type => type.title,
 
     getEditorInputs: () => ({
-        id: null,
         slug: TextEditor,
         title: TextEditor,
-        authorId: null,
+        createdAt: null,
+        updatedAt: null,
         content: VisualBlockEditor,
+
+        authorId: null,
+        tagIds: null,
     }),
 };

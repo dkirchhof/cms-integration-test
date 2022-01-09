@@ -1,4 +1,4 @@
-import { IItem } from "cms/dist/shared/types/itemTypeConfig";
+import { IItem } from "cms/dist/types/itemTypeConfig";
 
 export interface IAuthor extends IItem {
     firstname: string;

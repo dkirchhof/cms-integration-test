@@ -1,6 +1,6 @@
 import { NumberEditor } from "cms/dist/editor/editors/numberEditor";
-import { IBlockConfig, IBlock } from "cms/dist/editor/types/block";
-import { renderChildren } from "cms/dist/editor/utils/renderChildren";
+import { IBlockConfig, IBlock } from "cms/dist/types/block";
+import { renderChildren } from "cms/dist/utils/renderChildren";
 import { Container } from "./styles";
 
 interface IData {

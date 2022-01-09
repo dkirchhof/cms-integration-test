@@ -1,5 +1,5 @@
 import { MultiLineEditor } from "cms/dist/editor/editors/multiLineEditor";
-import { IBlockConfig } from "cms/dist/editor/types/block";
+import { IBlockConfig } from "cms/dist/types/block";
 import { P } from "./styles";
 
 interface IData {

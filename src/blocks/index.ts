@@ -1,4 +1,4 @@
-import { BlockConfigs } from "cms/dist/editor/types/block";
+import { BlockConfigs } from "cms/dist/types/block";
 import { ColumnsBlock } from "./columnsBlock";
 import { HeaderBlock } from "./headerBlock";
 import { HeadingBlock } from "./headingBlock";

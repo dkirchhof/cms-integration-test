@@ -1,5 +1,5 @@
 import { TextEditor } from "cms/dist/editor/editors/textEditor";
-import { IBlockConfig } from "cms/dist/editor/types/block";
+import { IBlockConfig } from "cms/dist/types/block";
 
 interface IData {
     text: string;

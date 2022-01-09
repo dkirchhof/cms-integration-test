@@ -1,4 +1,4 @@
-import { ItemTypeConfigs } from "cms/dist/shared/types/itemTypeConfig";
+import { ItemTypeConfigs } from "cms/dist/types/itemTypeConfig";
 import { authorItemType } from "./author";
 import { postItemType } from "./post";
 

@@ -1,12 +1,13 @@
 import { TextEditor } from "cms/dist/editor/editors/textEditor";
-import { IItemTypeConfig } from "cms/dist/shared/types/itemTypeConfig";
+import { IItemTypeConfig } from "cms/dist/types/itemTypeConfig";
 import { authorsRepo } from "../db";
 import { IAuthor } from "../types/author";
 
-export const authorItemType: IItemTypeConfig<IAuthor, IAuthor> = { 
+export const authorItemType: IItemTypeConfig<IAuthor> = { 
     name: ["author", "authors"], 
 
     getItem: authorsRepo.getOne,
+    getItemForEditing: authorsRepo.getOne,
     getItems: authorsRepo.getAll,
     createItem: authorsRepo.create,
     updateItem: authorsRepo.update, 

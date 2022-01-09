@@ -1,9 +1,10 @@
+import { IItem } from "cms/dist/types/itemTypeConfig";
 import { IAuthor } from "../types/author";
 import { ICreateOrUpdatePost, IPost } from "../types/post";
 import { IPostTag } from "../types/postTag";
 import { ITag } from "../types/tag";
 
-class Repo<T extends { id: string; }> {
+class Repo<T extends IItem, U extends IItem = T> {
     constructor(protected rows: T[]) { }
 
     getAll = async () => {
@@ -11,28 +12,40 @@ class Repo<T extends { id: string; }> {
     };
 
     getOne = async (id: string) => {
-        return this.rows.find(row => row.id === id) || null;
+        const row = this.rows.find(row => row.id === id);
+        
+        if (!row) {
+            throw new Error("couldn't find item");
+        }
+
+        return row;
     };
 
-    create = async (data: T) => {
+    getOneForEditing: (id: string) => Promise<U> = this.getOne as any;
+
+    create = async (data: U) => {
         const id = Math.random().toString().slice(2);
 
         const row = {
             ...data,
             id,
-        };
+        } as any;
 
         this.rows.push(row);
 
-        return row;
+        return row as T;
     };
 
-    update = async (id: string, data: Partial<T>) => {
-        const row = await this.getOne(id)!;
+    update = async (id: string, data: Partial<U>) => {
+        const row = await this.getOne(id);
+
+        if (!row) {
+            throw new Error("couldn't find item");
+        }
 
         Object.assign(row, data);
 
-        return row;
+        return row as T;
     };
 
     delete = async (id: string) => {
@@ -40,7 +53,26 @@ class Repo<T extends { id: string; }> {
     };
 }
 
-export const postsRepo = new class extends Repo<IPost> {
+export const postsRepo = new class extends Repo<IPost, ICreateOrUpdatePost> {
+    getAll = async () => {
+        return this.rows;
+    };
+
+    getOneForEditing = async (id: string) => {
+        const row = await this.getOne(id);
+        const postTags = await postsTagsRepo.getPostTagsOfPost(id);
+        
+        return {
+            id: row.id,
+            slug: row.slug,
+            title: row.title,
+            content: row.content,
+
+            authorId: row.authorId,
+            tagIds: postTags.map(tag => tag.tagId),
+        };
+    };
+
     getBySlug = async (slug: string) => {
         return this.rows.find(row => row.slug === slug);
     };
@@ -51,6 +83,8 @@ export const postsRepo = new class extends Repo<IPost> {
         const post: IPost = {
             ...newPostData,
             id: Math.random().toString(),
+            createdAt: new Date().toUTCString(),
+            updatedAt: new Date().toUTCString(),
         };
 
         this.rows.push(post);
@@ -81,6 +115,8 @@ export const postsRepo = new class extends Repo<IPost> {
 
         Object.assign(post, updatedPostData);
 
+        post.updatedAt = new Date().toUTCString();
+
         return post;
     };
 
@@ -95,7 +131,13 @@ export const postsRepo = new class extends Repo<IPost> {
     };
 }([
     {
-        id: "post1", slug: "first-post", title: "My first Post", authorId: "author1", content: {
+        id: "post1",
+        slug: "first-post",
+        title: "My first Post",
+        createdAt: new Date().toUTCString(),
+        updatedAt: new Date().toUTCString(),
+        authorId: "author1",
+        content: {
             blockName: "Root",
             data: {
                 children: [
@@ -140,8 +182,8 @@ export const postsRepo = new class extends Repo<IPost> {
             },
         },
     },
-{ id: "post2", slug: "second-post", title: "My second Post", authorId: "author1", content: { } },
-{ id: "post3", slug: "third-post", title: "My third Post", authorId: "author1", content: { } },
+{ id: "post2", slug: "second-post", title: "My second Post", authorId: "author1", createdAt: new Date().toUTCString(), updatedAt: new Date().toUTCString(), content: { blockName: "root", data: { children: [ ]}} },
+{ id: "post3", slug: "third-post", title: "My third Post", authorId: "author1", createdAt: new Date().toUTCString(), updatedAt: new Date().toUTCString(), content: { blockName: "root", data: { children: [ ]} } },
 ]);
 
 export const authorsRepo = new class extends Repo<IAuthor> {
@@ -166,7 +208,7 @@ export const postsTagsRepo = new class {
         { postId: "post1", tagId: "tag2" },
     ];
 
-    getTagIdsOfPost = async (postId: string) => {
+    getPostTagsOfPost = async (postId: string) => {
         return this.rows.filter(row => row.postId === postId);
     };
 

@@ -1,6 +1,6 @@
 import { TextEditor } from "cms/dist/editor/editors/textEditor";
 import { useItem } from "cms/dist/editor/pages/visualBlockEditor";
-import { IBlockConfig } from "cms/dist/editor/types/block";
+import { IBlockConfig } from "cms/dist/types/block";
 import { HeaderContainer } from "./styles";
 
 interface IData {

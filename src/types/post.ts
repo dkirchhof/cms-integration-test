@@ -1,15 +1,21 @@
-import { IItem } from "cms/dist/shared/types/itemTypeConfig";
+import { IBlock } from "cms/dist/types/block";
+import { IItem } from "cms/dist/types/itemTypeConfig";
 
-export interface IPostMinimal extends IItem {
+export interface IPost extends IItem {
     slug: string;
     title: string;
-}
+    content: IBlock;
+    createdAt: string;
+    updatedAt: string;
 
-export interface IPost extends IPostMinimal {
-    content: any;
     authorId: string;
 }
 
-export interface ICreateOrUpdatePost extends IPost {
+export interface ICreateOrUpdatePost extends IItem {
+    slug: string;
+    title: string;
+    content: IBlock;
+
     tagIds: string[];
+    authorId: string;
 }

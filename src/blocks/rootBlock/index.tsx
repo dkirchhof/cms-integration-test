@@ -1,5 +1,5 @@
-import { IBlock, IBlockConfig } from "cms/dist/editor/types/block";
-import { renderChildren } from "cms/dist/editor/utils/renderChildren";
+import { IBlock, IBlockConfig } from "cms/dist/types/block";
+import { renderChildren } from "cms/dist/utils/renderChildren";
 
 interface IData {
     children: IBlock[];
