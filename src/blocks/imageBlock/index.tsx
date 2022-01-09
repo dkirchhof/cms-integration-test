@@ -6,7 +6,7 @@ interface IData {
     src: string;
 }
 
-export const ImageBlock: IBlockConfig<IData> = {
+export const ImageBlock: IBlockConfig<any, IData> = {
     name: "Image",
 
     getInitialData: () => ({

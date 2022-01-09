@@ -1,18 +1,18 @@
 import { TextEditor } from "cms/dist/editor/editors/textEditor";
 import { VisualBlockEditor } from "cms/dist/editor/editors/visualBlockEditor";
 import { IItemTypeConfig } from "cms/dist/types/itemTypeConfig";
-import { postsRepo } from "../db";
+import { getRepos } from "../db";
 import { ICreateOrUpdatePost, IPost } from "../types/post";
 
 export const postItemType: IItemTypeConfig<IPost, ICreateOrUpdatePost> = { 
     name: ["post", "posts"], 
 
-    getItem: postsRepo.getOne,
-    getItemForEditing: postsRepo.getOneForEditing,
-    getItems: postsRepo.getAll,
-    createItem: postsRepo.create,
-    updateItem: postsRepo.update, 
-    deleteItem: postsRepo.delete,
+    getItem: getRepos().postsRepo.getOne,
+    getItemForEditing: getRepos().postsRepo.getOneForEditing,
+    getItems: getRepos().postsRepo.getAll,
+    createItem: getRepos().postsRepo.create,
+    updateItem: getRepos().postsRepo.update, 
+    deleteItem: getRepos().postsRepo.delete,
 
     listProps: ["id", "slug", "title"],
 

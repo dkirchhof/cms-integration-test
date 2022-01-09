@@ -8,7 +8,7 @@ interface IData {
     children: IBlock[];
 }
 
-export const MaxWidthBlock: IBlockConfig<IData> = {
+export const MaxWidthBlock: IBlockConfig<any, IData> = {
     name: "ContentLimitation",
 
     getInitialData: () => ({
@@ -24,7 +24,7 @@ export const MaxWidthBlock: IBlockConfig<IData> = {
 
     Component: props => (
         <Container maxWidth={props.data.maxWidth}>
-            {renderChildren(props.blockConfigs, props.data.children)}
+            {renderChildren(props.blockConfigs, props.ctx, props.data.children)}
         </Container>
     ),
 };

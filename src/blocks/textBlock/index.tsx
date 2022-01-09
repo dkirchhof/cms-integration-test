@@ -6,7 +6,7 @@ interface IData {
     text: string;
 }
 
-export const TextBlock: IBlockConfig<IData> = {
+export const TextBlock: IBlockConfig<any, IData> = {
     name: "Paragraph",
 
     getInitialData: () => ({

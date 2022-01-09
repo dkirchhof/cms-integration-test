@@ -1,15 +1,19 @@
+import { VisualBlockRenderer } from "cms/dist/frontend";
 import { NextPageContext } from "next";
-import { postsRepo } from "../db";
+import { blockConfigs } from "../blocks";
+import { getRepos } from "../db";
 import { IPost } from "../types/post";
 
 const Post = (props: { post: IPost; }) => (
-    <div>{props.post.title}</div>
+    <div suppressHydrationWarning>
+        <VisualBlockRenderer blockConfigs={blockConfigs} ctx={props.post} root={props.post.content} />
+    </div>
 );
 
 export default Post;
 
 export async function getServerSideProps(context: NextPageContext) {
-    const post = await postsRepo.getBySlug(context.query.slug as string);
+    const post = await getRepos().postsRepo.getBySlug(context.query.slug as string);
     
     if (!post) {
         return {

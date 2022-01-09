@@ -1,6 +1,6 @@
 import { TextEditor } from "cms/dist/editor/editors/textEditor";
-import { useItem } from "cms/dist/editor/pages/visualBlockEditor";
 import { IBlockConfig } from "cms/dist/types/block";
+import { IPost } from "../../types/post";
 import { HeaderContainer } from "./styles";
 
 interface IData {
@@ -8,7 +8,7 @@ interface IData {
     imgSrc: string;
 }
 
-export const HeaderBlock: IBlockConfig<IData> = {
+export const HeaderBlock: IBlockConfig<IPost, IData> = {
     name: "Header",
 
     getInitialData: () => ({
@@ -24,14 +24,11 @@ export const HeaderBlock: IBlockConfig<IData> = {
     getLabel: _data => "",
 
     Component: props => {
-        const page = useItem<any>();
-
         return (
             <HeaderContainer>
                 <img src={props.data.imgSrc} alt={props.data.imgAlt} />
                 <div>
-                    <h1>{page.title}</h1>
-                    <h2>{page.subtitle}</h2>
+                    <h1>{props.ctx.title}</h1>
                 </div>
             </HeaderContainer>
         );

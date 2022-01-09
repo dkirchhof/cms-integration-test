@@ -5,7 +5,7 @@ interface IData {
     text: string;
 }
 
-export const HeadingBlock: IBlockConfig<IData> = {
+export const HeadingBlock: IBlockConfig<any, IData> = {
     name: "Heading",
 
     getInitialData: () => ({

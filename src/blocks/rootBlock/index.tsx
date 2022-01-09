@@ -5,7 +5,7 @@ interface IData {
     children: IBlock[];
 }
 
-export const RootBlock: IBlockConfig<IData> = {
+export const RootBlock: IBlockConfig<any, IData> = {
     name: "Root",
 
     getInitialData: () => ({
@@ -18,7 +18,7 @@ export const RootBlock: IBlockConfig<IData> = {
 
     Component: props => (
         <>
-            {renderChildren(props.blockConfigs, props.data.children)}
+            {renderChildren(props.blockConfigs, props.ctx, props.data.children)}
         </>
     ),
 };

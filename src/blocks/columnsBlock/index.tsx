@@ -8,7 +8,7 @@ interface IData {
     children: IBlock[];
 }
 
-export const ColumnsBlock: IBlockConfig<IData> = {
+export const ColumnsBlock: IBlockConfig<any, IData> = {
     name: "Columns",
 
     getInitialData: () => ({
@@ -24,7 +24,7 @@ export const ColumnsBlock: IBlockConfig<IData> = {
 
     Component: props => (
         <ColumnsContainer gap={props.data.gap}>
-            {renderChildren(props.blockConfigs, props.data.children)}
+            {renderChildren(props.blockConfigs, props.ctx, props.data.children)}
         </ColumnsContainer>
     ),
 };
