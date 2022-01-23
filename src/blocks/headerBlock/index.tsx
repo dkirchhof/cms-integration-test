@@ -1,6 +1,6 @@
-import { TextEditor } from "cms/dist/editor/editors/textEditor";
+import { textEditorFactory } from "cms/dist/editor/editors/textEditor";
 import { IBlockConfig } from "cms/dist/types/block";
-import { IPost } from "../../types/post";
+import { IPostEntity } from "../../types/post";
 import { HeaderContainer } from "./styles";
 
 interface IData {
@@ -8,20 +8,20 @@ interface IData {
     imgSrc: string;
 }
 
-export const HeaderBlock: IBlockConfig<IPost, IData> = {
+export const HeaderBlock: IBlockConfig<IPostEntity, IData> = {
     name: "Header",
+    toString: () => "",
 
-    getInitialData: () => ({
-        imgAlt: "",
-        imgSrc: "",
-    }),
-
-    getEditorInputs: () => ({
-        imgAlt: TextEditor,
-        imgSrc: TextEditor,
-    }),
-
-    getLabel: _data => "",
+    propConfigs: {
+        imgAlt: {
+            editor: textEditorFactory(),
+            defaultValue: "",
+        },
+        imgSrc: {
+            editor: textEditorFactory(),
+            defaultValue: "",
+        },
+    },
 
     Component: props => {
         return (

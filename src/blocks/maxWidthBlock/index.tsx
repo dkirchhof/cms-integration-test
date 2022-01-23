@@ -1,4 +1,4 @@
-import { NumberEditor } from "cms/dist/editor/editors/numberEditor";
+import { numberEditorFactory } from "cms/dist/editor/editors/numberEditor";
 import { IBlockConfig, IBlock } from "cms/dist/types/block";
 import { renderChildren } from "cms/dist/utils/renderChildren";
 import { Container } from "./styles";
@@ -10,17 +10,18 @@ interface IData {
 
 export const MaxWidthBlock: IBlockConfig<any, IData> = {
     name: "ContentLimitation",
+    toString: data => data.maxWidth.toString(),
 
-    getInitialData: () => ({
-        maxWidth: 800,
-        children: [],
-    }),
-
-    getEditorInputs: () => ({
-        maxWidth: NumberEditor,
-    }),
-
-    getLabel: data => data.maxWidth.toString(),
+    propConfigs: {
+        maxWidth: {
+            editor: numberEditorFactory({ min: 0 }),
+            defaultValue: 800,
+        },
+        children: {
+            editor: null,
+            defaultValue: [],
+        },
+    },
 
     Component: props => (
         <Container maxWidth={props.data.maxWidth}>

@@ -1,10 +1,10 @@
 import { IItem } from "cms/dist/types/itemTypeConfig";
-import { IAuthor } from "../types/author";
-import { ICreateOrUpdatePost, IPost } from "../types/post";
-import { IPostTag } from "../types/postTag";
-import { ITag } from "../types/tag";
+import { IAuthorEntity } from "../types/author";
+import { IPostEntity } from "../types/post";
+import { IPostTagEntity } from "../types/postTag";
+import { ITagEntity } from "../types/tag";
 
-class Repo<T extends IItem, U extends IItem = T> {
+class Repo<T extends IItem> {
     constructor(protected rows: T[]) { }
 
     getAll = async () => {
@@ -21,22 +21,17 @@ class Repo<T extends IItem, U extends IItem = T> {
         return row;
     };
 
-    getOneForEditing: (id: string) => Promise<U> = this.getOne as any;
-
-    create = async (data: U) => {
+    create = async (data: T) => {
         const id = Math.random().toString().slice(2);
 
-        const row = {
-            ...data,
-            id,
-        } as any;
+        data.id = id;
 
-        this.rows.push(row);
+        this.rows.push(data);
 
-        return row as T;
+        return id;
     };
 
-    update = async (id: string, data: Partial<U>) => {
+    update = async (id: string, data: Partial<T>) => {
         const row = await this.getOne(id);
 
         if (!row) {
@@ -44,123 +39,16 @@ class Repo<T extends IItem, U extends IItem = T> {
         }
 
         Object.assign(row, data);
-
-        return row as T;
     };
 
     delete = async (id: string) => {
         this.rows = this.rows.filter(row => row.id !== id);
     };
 }
-
-class PostsRepo extends Repo<IPost, ICreateOrUpdatePost> {
-    getAll = async () => {
-        return this.rows;
-    };
-
-    getOneForEditing = async (id: string) => {
-        const row = await this.getOne(id);
-        const postTags = await getRepos().postTagsRepo.getPostTagsOfPost(id);
-
-        return {
-            id: row.id,
-            slug: row.slug,
-            title: row.title,
-            content: row.content,
-
-            authorId: row.authorId,
-            tagIds: postTags.map(tag => tag.tagId),
-        };
-    };
-
-    getBySlug = async (slug: string) => {
-        return this.rows.find(row => row.slug === slug);
-    };
-
-    create = async (data: ICreateOrUpdatePost) => {
-        const { tagIds, ...newPostData } = data;
-
-        const post: IPost = {
-            ...newPostData,
-            id: Math.random().toString(),
-            createdAt: new Date().toUTCString(),
-            updatedAt: new Date().toUTCString(),
-        };
-
-        this.rows.push(post);
-
-        await Promise.all(
-            tagIds.map(tagId => getRepos().postTagsRepo.create({ postId: post.id, tagId }))
-        );
-
-        return post;
-    };
-
-    update = async (id: string, data: Partial<ICreateOrUpdatePost>) => {
-        const post = await this.getOne(id);
-
-        if (!post) {
-            throw new Error("can't find item");
-        }
-
-        const { tagIds, ...updatedPostData } = data;
-
-        if (tagIds) {
-            await getRepos().postTagsRepo.deleteTagIdsOfPost(id);
-
-            await Promise.all(
-                tagIds.map(tagId => getRepos().postTagsRepo.create({ postId: post.id, tagId }))
-            );
-        }
-
-        Object.assign(post, updatedPostData);
-
-        post.updatedAt = new Date().toUTCString();
-
-        return post;
-    };
-
-    delete = async (id: string) => {
-        this.rows = this.rows.filter(row => row.id !== id);
-
-        await getRepos().postTagsRepo.deleteTagIdsOfPost(id);
-    };
-
-    deletePostsOfAuthor = async (authorId: string) => {
-        this.rows = this.rows.filter(row => row.authorId !== authorId);
-    };
-}
-
-
-class AuthorsRepo extends Repo<IAuthor> {
-    delete = async (id: string) => {
-        this.rows = this.rows.filter(row => row.id !== id);
-
-        await getRepos().postsRepo.deletePostsOfAuthor(id);
-    };
-}
-
-class PostTagsRepo {
-    constructor(protected rows: IPostTag[]) { }
-
-    getPostTagsOfPost = async (postId: string) => {
-        return this.rows.filter(row => row.postId === postId);
-    };
-
-    create = async (postTag: IPostTag) => {
-        this.rows.push(postTag);
-
-        return postTag;
-    };
-
-    deleteTagIdsOfPost = async (postId: string) => {
-        this.rows = this.rows.filter(row => row.postId !== postId);
-    };
-};
 
 export const getRepos = () => {
     const repos = {
-        postsRepo: new PostsRepo([
+        postsRepo: new Repo<IPostEntity>([
             {
                 id: "post1",
                 slug: "first-post",
@@ -217,19 +105,20 @@ export const getRepos = () => {
             { id: "post3", slug: "third-post", title: "My third Post", authorId: "author1", createdAt: new Date().toUTCString(), updatedAt: new Date().toUTCString(), content: { blockName: "root", data: { children: [] } } },
         ]),
 
-        authorsRepo: new AuthorsRepo([
+        authorsRepo: new Repo<IAuthorEntity>([
             { id: "author1", firstname: "John", lastname: "Doe", email: "john@doe.com" },
+            { id: "author2", firstname: "Max", lastname: "Mustermann", email: "max@mustermann.de" },
         ]),
 
-        tagsRepo: new Repo<ITag>([
+        tagsRepo: new Repo<ITagEntity>([
             { id: "tag1", name: "Tag 1" },
             { id: "tag2", name: "Tag 2" },
             { id: "tag3", name: "Tag 3" },
         ]),
 
-        postTagsRepo: new PostTagsRepo([
-            { postId: "post1", tagId: "tag1" },
-            { postId: "post1", tagId: "tag2" },
+        postTagsRepo: new Repo<IPostTagEntity>([
+            { id: "1", postId: "post1", tagId: "tag1" },
+            { id: "2", postId: "post1", tagId: "tag2" },
         ]),
     };
 
@@ -238,4 +127,26 @@ export const getRepos = () => {
     }
 
     return (global as any).repos as typeof repos;
+};
+
+export const getTagsOfPost = async (postId: string) => {
+    return (await getRepos().postTagsRepo.getAll())
+        .filter(postTag => postTag.postId === postId)
+        .map(postTag => postTag.tagId);
+};
+
+export const setTagsForPost = async (postId: string, tagIds: string[]) => {
+    // get all connections
+    const oldConnections = (await getRepos().postTagsRepo.getAll())
+        .filter(postTag => postTag.postId === postId);
+
+    // delete them
+    for (const connection of oldConnections) {
+        await getRepos().postTagsRepo.delete(connection.id);
+    }
+
+    // create new tag connections
+    for (const tagId of tagIds) {
+        await getRepos().postTagsRepo.create({ id: "", postId, tagId });
+    }
 };

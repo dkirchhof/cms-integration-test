@@ -7,14 +7,14 @@ interface IData {
 
 export const RootBlock: IBlockConfig<any, IData> = {
     name: "Root",
+    toString: () => "",
 
-    getInitialData: () => ({
-        children: [],
-    }),
-
-    getEditorInputs: () => ({}),
-
-    getLabel: _data => "",
+    propConfigs: {
+        children: {
+            editor: null,
+            defaultValue: [],
+        },
+    },
 
     Component: props => (
         <>

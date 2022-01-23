@@ -1,25 +1,46 @@
-import { TextEditor } from "cms/dist/editor/editors/textEditor";
+import { textEditorFactory } from "cms/dist/editor/editors/textEditor";
 import { IItemTypeConfig } from "cms/dist/types/itemTypeConfig";
+import { isEmail, notEmpty } from "cms/dist/validators/stringValidators";
 import { getRepos } from "../db";
-import { IAuthor } from "../types/author";
+import { IAuthorEntity, IEditableAuthor } from "../types/author";
 
-export const authorItemType: IItemTypeConfig<IAuthor> = { 
-    name: ["author", "authors"], 
+export const authorItemType: IItemTypeConfig<IAuthorEntity, IEditableAuthor> = {
+    name: ["author", "authors"],
 
-    getItem: getRepos().authorsRepo.getOne,
-    getItemForEditing: getRepos().authorsRepo.getOne,
-    getItems: getRepos().authorsRepo.getAll,
-    createItem: getRepos().authorsRepo.create,
-    updateItem: getRepos().authorsRepo.update, 
-    deleteItem: getRepos().authorsRepo.delete,
+    toString: entity => `${entity.firstname} ${entity.lastname}`,
 
-    listProps: ["id", "firstname", "lastname", "email"],
+    backend: {
+        api: {
+            getEntity: getRepos().authorsRepo.getOne,
+            getEntities: getRepos().authorsRepo.getAll,
+            getEditableItem: getRepos().authorsRepo.getOne,
+            createItem: getRepos().authorsRepo.create,
+            updateItem: getRepos().authorsRepo.update,
+            deleteItem: getRepos().authorsRepo.delete,
+        },
+    },
 
-    getLabel: type => `${type.firstname} ${type.lastname}`,
+    frontend: {
+        listProps: ["id", "firstname", "lastname", "email"],
 
-    getEditorInputs: () => ({
-        firstname: TextEditor,
-        lastname: TextEditor,
-        email: TextEditor,
-    }),
+        editor: {
+            propConfigs: {
+                firstname: {
+                    editor: textEditorFactory(),
+                    defaultValue: "",
+                    validators: [notEmpty],
+                },
+                lastname: {
+                    editor: textEditorFactory(),
+                    defaultValue: "",
+                    validators: [notEmpty],
+                },
+                email: {
+                    editor: textEditorFactory(),
+                    defaultValue: "",
+                    validators: [notEmpty, isEmail],
+                },
+            },
+        },
+    },
 };

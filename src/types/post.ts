@@ -1,7 +1,7 @@
 import { IBlock } from "cms/dist/types/block";
 import { IItem } from "cms/dist/types/itemTypeConfig";
 
-export interface IPost extends IItem {
+export interface IPostEntity extends IItem {
     slug: string;
     title: string;
     content: IBlock;
@@ -11,11 +11,10 @@ export interface IPost extends IItem {
     authorId: string;
 }
 
-export interface ICreateOrUpdatePost extends IItem {
+export interface IEditablePost extends IItem {
     slug: string;
     title: string;
     content: IBlock;
-
-    tagIds: string[];
     authorId: string;
+    tagIds: string[];
 }
