@@ -56,53 +56,54 @@ export const getRepos = () => {
                 createdAt: new Date().toUTCString(),
                 updatedAt: new Date().toUTCString(),
                 authorId: "author1",
-                content: {
-                    blockName: "Root",
-                    data: {
-                        children: [
-                            {
-                                blockName: "Header",
-                                data: {
-                                    imgSrc: "https://i.picsum.photos/id/60/1000/300.jpg?hmac=WmF-em1XlDmu1mGUw-jMk9g4Qr2mbIgTXGCVx03vWfE",
-                                    imgAlt: "desk",
-                                },
-                            },
-                            {
-                                blockName: "ContentLimitation",
-                                data: {
-                                    maxWidth: 800,
-                                    children: [
-                                        {
-                                            blockName: "Paragraph",
-                                            data: { text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." },
-                                        },
-                                        {
-                                            blockName: "Paragraph",
-                                            data: { text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." }
-                                        },
-                                        {
-                                            blockName: "Image",
-                                            data: { src: "https://i.picsum.photos/id/101/200/200.jpg?hmac=8aiHS9K78DvBexQ7ZROLuLizDR22o8CcjRMUhHbZU6g", alt: "test bild" },
-                                        },
-                                        {
-                                            blockName: "Columns",
-                                            data: {
-                                                gap: 10,
-                                                children: [
-                                                    { blockName: "Paragraph", data: { text: "column 1" } },
-                                                    { blockName: "Paragraph", data: { text: "column 2" } },
-                                                ],
-                                            },
-                                        },
-                                    ],
-                                },
-                            },
-                        ],
+                content: [ 
+                    {
+                        blockName: "Header",
+                        id: "aaa",
+                        data: {
+                            imgSrc: "https://i.picsum.photos/id/60/1000/300.jpg?hmac=WmF-em1XlDmu1mGUw-jMk9g4Qr2mbIgTXGCVx03vWfE",
+                            imgAlt: "desk",
+                        },
                     },
-                },
+                    {
+                        blockName: "ContentLimitation",
+                        id: "bbb",
+                        data: {
+                            maxWidth: 800,
+                            children: [
+                                {
+                                    blockName: "Paragraph",
+                                    id: "ccc",
+                                    data: { text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." },
+                                },
+                                {
+                                    blockName: "Paragraph",
+                                    id: "ddd",
+                                    data: { text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." }
+                                },
+                                {
+                                    blockName: "Image",
+                                    id: "eee",
+                                    data: { src: "https://i.picsum.photos/id/101/200/200.jpg?hmac=8aiHS9K78DvBexQ7ZROLuLizDR22o8CcjRMUhHbZU6g", alt: "test bild" },
+                                },
+                                {
+                                    blockName: "Columns",
+                                    id: "fff",
+                                    data: {
+                                        gap: 10,
+                                        children: [
+                                            { blockName: "Paragraph", id: "ggg", data: { text: "column 1" } },
+                                            { blockName: "Paragraph", id: "hhh", data: { text: "column 2" } },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
             },
-            { id: "post2", slug: "second-post", title: "My second Post", authorId: "author1", createdAt: new Date().toUTCString(), updatedAt: new Date().toUTCString(), content: { blockName: "root", data: { children: [] } } },
-            { id: "post3", slug: "third-post", title: "My third Post", authorId: "author1", createdAt: new Date().toUTCString(), updatedAt: new Date().toUTCString(), content: { blockName: "root", data: { children: [] } } },
+            { id: "post2", slug: "second-post", title: "My second Post", authorId: "author1", createdAt: new Date().toUTCString(), updatedAt: new Date().toUTCString(), content: [] },
+            { id: "post3", slug: "third-post", title: "My third Post", authorId: "author1", createdAt: new Date().toUTCString(), updatedAt: new Date().toUTCString(), content: [] },
         ]),
 
         authorsRepo: new Repo<IAuthorEntity>([

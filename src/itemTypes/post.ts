@@ -91,7 +91,7 @@ export const postItemType: IItemTypeConfig<IPostEntity, IEditablePost> = {
                 content: {
                     fullscreen: true,
                     editor: visualBlockEditorFactory({ blockConfigs }),
-                    defaultValue: { blockName: "root", data: { children:[] }},
+                    defaultValue: [],
                     validators: [],
                 }
             },

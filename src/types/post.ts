@@ -4,7 +4,7 @@ import { IItem } from "cms/dist/types/itemTypeConfig";
 export interface IPostEntity extends IItem {
     slug: string;
     title: string;
-    content: IBlock;
+    content: IBlock[];
     createdAt: string;
     updatedAt: string;
 
@@ -14,7 +14,7 @@ export interface IPostEntity extends IItem {
 export interface IEditablePost extends IItem {
     slug: string;
     title: string;
-    content: IBlock;
+    content: IBlock[];
     authorId: string;
     tagIds: string[];
 }
