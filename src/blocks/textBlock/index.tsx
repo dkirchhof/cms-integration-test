@@ -6,7 +6,7 @@ interface IData {
     text: string;
 }
 
-export const TextBlock: IBlockConfig<any, IData> = {
+export const TextBlock: IBlockConfig<IData> = {
     name: "Paragraph",
     toString: data => data.text.slice(0, 50),
 

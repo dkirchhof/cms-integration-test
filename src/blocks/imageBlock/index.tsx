@@ -6,7 +6,7 @@ interface IData {
     src: string;
 }
 
-export const ImageBlock: IBlockConfig<any, IData> = {
+export const ImageBlock: IBlockConfig<IData> = {
     name: "Image",
     toString: data => data.alt || data.src,
     

@@ -2,7 +2,7 @@
   "name": "cms-example-next",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "rm .next/ -r && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

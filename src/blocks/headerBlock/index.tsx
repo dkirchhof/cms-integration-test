@@ -1,4 +1,5 @@
 import { textEditorFactory } from "cms/dist/editor/editors/textEditor";
+import { useItem } from "cms/dist/shared/hooks/useItem";
 import { IBlockConfig } from "cms/dist/types/block";
 import { IPostEntity } from "../../types/post";
 import { HeaderContainer } from "./styles";
@@ -8,7 +9,7 @@ interface IData {
     imgSrc: string;
 }
 
-export const HeaderBlock: IBlockConfig<IPostEntity, IData> = {
+export const HeaderBlock: IBlockConfig<IData> = {
     name: "Header",
     toString: () => "",
 
@@ -24,11 +25,13 @@ export const HeaderBlock: IBlockConfig<IPostEntity, IData> = {
     },
 
     Component: props => {
+        const post = useItem<IPostEntity>();
+
         return (
             <HeaderContainer>
                 <img src={props.data.imgSrc} alt={props.data.imgAlt} />
                 <div>
-                    <h1>{props.ctx.title}</h1>
+                    <h1>{post.title}</h1>
                 </div>
             </HeaderContainer>
         );
