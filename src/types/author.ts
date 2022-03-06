@@ -5,5 +5,3 @@ export interface IAuthorEntity extends IItem {
     lastname: string;
     email: string;
 }
-
-export type IEditableAuthor = IAuthorEntity;

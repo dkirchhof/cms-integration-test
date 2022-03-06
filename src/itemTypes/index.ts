@@ -1,10 +1,4 @@
-import { ItemTypeConfigs } from "cms/dist/types/itemTypeConfig";
-import { authorItemType } from "./author";
-import { postItemType } from "./post";
-import { tagItemType } from "./tag";
+import { person } from "./person";
+import { tag } from "./tag";
 
-export const itemTypeConfigs: ItemTypeConfigs = [
-    postItemType,
-    authorItemType,
-    tagItemType,
-];
+export const itemTypes = [person, tag];

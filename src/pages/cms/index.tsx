@@ -1,23 +1,23 @@
-import { editorFactory } from "cms/dist/editor";
 import { NextPage } from "next";
-import { itemTypeConfigs } from "../../itemTypes";
+import { cms } from "../../index";
+import { itemTypes } from "../../itemTypes";
 
 const Admin: NextPage = () => {
-    const Editor = editorFactory(itemTypeConfigs)
+    const Editor = cms.createEditor(itemTypes);
 
     return (
         <div suppressHydrationWarning>
-            {typeof window === "undefined" ? null : <Editor/>}
+            {typeof window === "undefined" ? null : <Editor />}
         </div>
     )
 };
 
-export async function getServerSideProps() {
-    return {
-        props: {
-            random: Math.random(),
-        }, 
-    };
-};
+// export async function getServerSideProps() {
+//     return {
+//         props: {
+//             random: Math.random(),
+//         }, 
+//     };
+// };
 
 export default Admin;

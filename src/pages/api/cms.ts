@@ -1,4 +1,4 @@
-import { requestHandler } from "cms/dist/server";
-import { itemTypeConfigs } from "../../itemTypes";
+import { cms } from "../..";
+import { itemTypes } from "../../itemTypes";
 
-export default requestHandler(itemTypeConfigs);
+export default cms.createAPI(itemTypes);

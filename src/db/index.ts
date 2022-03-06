@@ -4,7 +4,7 @@ import { IPostEntity } from "../types/post";
 import { IPostTagEntity } from "../types/postTag";
 import { ITagEntity } from "../types/tag";
 
-class Repo<T extends IItem> {
+class Repo<T extends IItem<any>> {
     constructor(protected rows: T[]) { }
 
     getAll = async () => {
@@ -106,9 +106,25 @@ export const getRepos = () => {
             { id: "post3", slug: "third-post", title: "My third Post", authorId: "author1", createdAt: new Date().toUTCString(), updatedAt: new Date().toUTCString(), content: [] },
         ]),
 
-        authorsRepo: new Repo<IAuthorEntity>([
-            { id: "author1", firstname: "John", lastname: "Doe", email: "john@doe.com" },
-            { id: "author2", firstname: "Max", lastname: "Mustermann", email: "max@mustermann.de" },
+        authorsRepo: new Repo<any>([
+            { 
+                id: "author1", 
+                type: "author",
+                data: { 
+                    firstname: { "all": "John" }, 
+                    lastname: { "all": "Doe" }, 
+                    email: { "all": "john@doe.com" },
+                },
+            },
+            { 
+                id: "author2", 
+                type: "author",
+                data: { 
+                    firstname: { "all": "Max" }, 
+                    lastname: { "all": "Mustermann" }, 
+                    email: { "all": "max@mustermann.de" },
+                },
+            },
         ]),
 
         tagsRepo: new Repo<ITagEntity>([
