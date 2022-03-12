@@ -2,10 +2,11 @@ import { numberEditorFactory } from "cms/dist/editor/editors/numberEditor";
 import { textEditorFactory } from "cms/dist/editor/editors/textEditor";
 import { isEmail, notEmpty } from "cms/dist/validators/stringValidators";
 import { itemTypeBuilder } from "..";
+import { getRepos } from "../db";
 
-const listType = itemTypeBuilder.createListType(["firstname", "lastname", "email"]);
+export const listType = itemTypeBuilder.createListType(["firstname", "lastname", "email"]);
 
-const editorType = itemTypeBuilder.createEditorType({
+export const editorType = itemTypeBuilder.createEditorType({
     firstname: {
         localize: false,
         editor: textEditorFactory(),
@@ -42,42 +43,6 @@ const editorType = itemTypeBuilder.createEditorType({
     },
 });
 
-const tmpData = [
-    {
-        id: "p1",
-        firstname: "John",
-        lastname: "Doe",
-        email: "john@doe.com",
-        age: 30,
-        job: { "en-US": "Developer", "de-DE": "Entwickler" },
-    },
-    {
-        id: "p2",
-        firstname: "Max",
-        lastname: "Mustermann",
-        email: "max@mustermann.de",
-        age: 34,
-        job: { "en-US": "Editor", "de-DE": "Redakteur" },
-    },
-];
-
-const getList = () => Promise.resolve(
-    tmpData.map(person => {
-        const mappedPerson: typeof listType.t = {
-            id: person.id,
-            firstname: person.firstname,
-            lastname: person.lastname,
-            email: person.email,
-        };
-
-        return mappedPerson;
-    })
-);
-
-const getItem = (id: string) => Promise.resolve(
-    tmpData.find(person => person.id === id)
-);
-
 export const person = itemTypeBuilder.createItemType({
     name: ["person", "persons"],
 
@@ -87,11 +52,11 @@ export const person = itemTypeBuilder.createItemType({
     editorType,
 
     api: {
-        getList,
-        getItem,
+        getList: () => getRepos().personsRepo.getList(),
+        getItem: id => getRepos().personsRepo.getItem(id),
 
-        createItem: values => Promise.resolve(""),
-        updateItem: (id, values) => Promise.resolve(),
-        deleteItem: id => Promise.resolve(),
+        createItem: values => getRepos().personsRepo.createItem(values),
+        updateItem: (id, values) => getRepos().personsRepo.updateItem(id, values),
+        deleteItem: id => getRepos().personsRepo.deleteItem(id),
     },
 });

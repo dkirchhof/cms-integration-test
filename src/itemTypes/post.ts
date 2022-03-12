@@ -1,124 +1,103 @@
-import { itemSelectorFactory, itemsSelectorFactory } from "cms/dist/editor/editors/itemSelector";
 import { textEditorFactory } from "cms/dist/editor/editors/textEditor";
-import { visualBlockEditorFactory } from "cms/dist/editor/editors/visualBlockEditor";
-import { IItemTypeConfig } from "cms/dist/types/itemTypeConfig";
 import { notEmpty } from "cms/dist/validators/stringValidators";
-import { blockConfigs } from "../blocks";
-import { getRepos, getTagsOfPost, setTagsForPost } from "../db";
-import { IEditablePost, IPostEntity } from "../types/post";
-import { authorItemType } from "./author";
-import { tagItemType } from "./tag";
+import { itemTypeBuilder } from "..";
+import { getRepos } from "../db";
 
-export const postItemType: IItemTypeConfig<IPostEntity, IEditablePost> = {
+export const listType = itemTypeBuilder.createListType(["slug", "title"]);
+
+export const editorType = itemTypeBuilder.createEditorType({
+    slug: {
+        localize: true,
+        editor: textEditorFactory(),
+        defaultValue: "",
+        validators: [notEmpty],
+    },
+    title: {
+        localize: true,
+        editor: textEditorFactory(),
+        defaultValue: "",
+        validators: [notEmpty],
+    },
+    // authorId: {
+    //     label: "Author",
+    //     editor: itemSelectorFactory({ itemTypeConfig: authorItemType }),
+    //     defaultValue: "",
+    //     validators: [],
+    // },
+    // tagIds: {
+    //     label: "Tags",
+    //     editor: itemsSelectorFactory({ itemTypeConfig: tagItemType }),
+    //     defaultValue: [],
+    //     validators: [],
+    // },
+    // content: {
+    //     fullscreen: true,
+    //     editor: visualBlockEditorFactory({ blockConfigs }),
+    //     defaultValue: [],
+    //     validators: [],
+    // }
+});
+
+export const post = itemTypeBuilder.createItemType({
     name: ["post", "posts"],
 
-    toString: entity => entity.title,
+    toString: item => item.title,
 
-    backend: {
-        api: {
-            getEntity: getRepos().postsRepo.getOne,
-            getEntities: getRepos().postsRepo.getAll,
-            getEditableItem: async id => {
-                const post = await getRepos().postsRepo.getOne(id);
+    listType,
+    editorType,
 
-                const tagIds = await getTagsOfPost(id);
+    api: {
+        getList: () => getRepos().postsRepo.getList(),
+        getItem: id => getRepos().postsRepo.getItem(id),
 
-                return {
-                    ...post,
-                    tagIds,
-                };
-            },
-            createItem: async values => {
-                const postEntity: IPostEntity = {
-                    authorId: values.authorId,
-                    content: values.content,
-                    id: values.id,
-                    slug: values.slug,
-                    title: values.title,
-                    createdAt: new Date().toUTCString(),
-                    updatedAt: new Date().toUTCString(),
-                };
+        createItem: values => getRepos().postsRepo.createItem(values),
+        updateItem: (id, values) => getRepos().postsRepo.updateItem(id, values),
+        deleteItem: id => getRepos().postsRepo.deleteItem(id),
+    }
+});
 
-                const id = await getRepos().postsRepo.create(postEntity);
+            // getEditableItem: async id => {
+            //     const post = await getRepos().postsRepo.getOne(id);
 
-                await setTagsForPost(id, values.tagIds);
+            //     const tagIds = await getTagsOfPost(id);
 
-                return id;
-            },
-            updateItem: async (id, values) => {
-                const postEntity: Partial<IPostEntity> = {
-                    ...values,
-                    updatedAt: new Date().toUTCString(),
-                }; 
+            //     return {
+            //         ...post,
+            //         tagIds,
+            //     };
+            // },
+            // createItem: async values => {
+            //     const postEntity: IPostEntity = {
+            //         authorId: values.authorId,
+            //         content: values.content,
+            //         id: values.id,
+            //         slug: values.slug,
+            //         title: values.title,
+            //         createdAt: new Date().toUTCString(),
+            //         updatedAt: new Date().toUTCString(),
+            //     };
 
-                await getRepos().postsRepo.update(id, postEntity);
+            //     const id = await getRepos().postsRepo.create(postEntity);
 
-                if (values.tagIds) {
-                    await setTagsForPost(id, values.tagIds);
-                }
-            },
-            deleteItem: getRepos().postsRepo.delete,
-        },
-    },
+            //     await setTagsForPost(id, values.tagIds);
 
-    frontend: {
-        listProps: ["id", "slug", "title"],
+            //     return id;
+            // },
+            // updateItem: async (id, values) => {
+            //     const postEntity: Partial<IPostEntity> = {
+            //         ...values,
+            //         updatedAt: new Date().toUTCString(),
+            //     };
 
-        editor: {
-            propConfigs: {
-                slug: {
-                    editor: textEditorFactory(),
-                    defaultValue: "",
-                    validators: [notEmpty],
-                },
-                title: {
-                    editor: textEditorFactory(),
-                    defaultValue: "",
-                    validators: [notEmpty],
-                },
-                authorId: {
-                    label: "Author",
-                    editor: itemSelectorFactory({ itemTypeConfig: authorItemType }),
-                    defaultValue: "",
-                    validators: [],
-                },
-                tagIds: {
-                    label: "Tags",
-                    editor: itemsSelectorFactory({ itemTypeConfig: tagItemType }),
-                    defaultValue: [],
-                    validators: [],
-                },
-                content: {
-                    fullscreen: true,
-                    editor: visualBlockEditorFactory({ blockConfigs }),
-                    defaultValue: [],
-                    validators: [],
-                }
-            },
-        },
+            //     await getRepos().postsRepo.update(id, postEntity);
 
-    },
+            //     if (values.tagIds) {
+            //         await setTagsForPost(id, values.tagIds);
+            //     }
+            // },
+            // deleteItem: getRepos().postsRepo.delete,
+        // },
+    // },
 
-    // getInitialData: () => ({
-    //     id: "",
-    //     slug: "",
-    //     title: "",
-    //     content: {
-    //         blockName: "Root",
-    //         data: {
-    //             children: []
-    //         },
-    //     },
-    //     tagIds: [],
-    //     authorId: "",
-    // }),
-
-    // getEditorInputs: () => ({
-    //     slug: TextEditor,
-    //     title: TextEditor,
-    //     content: VisualBlockEditor,
-
-    //     authorId: null,
-    //     tagIds: null,
-    // }),
-};
+    // frontend: {
+// };
