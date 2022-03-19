@@ -1,9 +1,10 @@
-import { itemSelectorFactory } from "cms/dist/editor/editors/itemSelector";
+import { itemSelectorFactory, itemsSelectorFactory } from "cms/dist/editor/editors/itemSelector";
 import { textEditorFactory } from "cms/dist/editor/editors/textEditor";
 import { notEmpty } from "cms/dist/validators/stringValidators";
 import { itemTypeBuilder } from "..";
 import { getRepos } from "../db";
 import { person } from "./person";
+import { tag } from "./tag";
 
 export const listType = itemTypeBuilder.createListType(["slug", "title"]);
 
@@ -22,17 +23,16 @@ export const editorType = itemTypeBuilder.createEditorType({
     },
     authorId: {
         localize: false,
-        label: "Author",
-        editor: itemSelectorFactory({ itemTypeConfig: person }),
+        editor: itemSelectorFactory({ itemType: person }),
         defaultValue: "",
         validators: [],
     },
-    // tagIds: {
-    //     label: "Tags",
-    //     editor: itemsSelectorFactory({ itemTypeConfig: tagItemType }),
-    //     defaultValue: [],
-    //     validators: [],
-    // },
+    tagIds: {
+        localize: false,
+        editor: itemsSelectorFactory({ itemType: tag }),
+        defaultValue: [] as string[],
+        validators: [],
+    },
     // content: {
     //     fullscreen: true,
     //     editor: visualBlockEditorFactory({ blockConfigs }),

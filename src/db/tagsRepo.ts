@@ -1,6 +1,4 @@
-import { Partial2 } from "cms/dist/itemTypeBuilder";
 import { HTTPError } from "cms/dist/server/types/httpError";
-import { createId } from ".";
 import { createId, getPaginatedRows } from ".";
 import { locales } from "..";
 import { editorType, listType } from "../itemTypes/tag";
@@ -14,6 +12,10 @@ export class TagsRepo {
         {
             id: "tag2",
             name: { "en-US": "Tag two", "de-DE": "Tag zwei" },
+        },
+        {
+            id: "tag3",
+            name: { "en-US": "Tag three", "de-DE": "Tag drei" },
         },
     ];
 
@@ -52,7 +54,7 @@ export class TagsRepo {
         return id;
     }
 
-    public async updateItem(id: string, values: Partial2<typeof editorType.t>) {
+    public async updateItem(id: string, values: typeof editorType.tPartial) {
         const old = await this.getItem(id);
 
         if (!old) {

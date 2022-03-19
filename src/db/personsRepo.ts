@@ -1,6 +1,4 @@
-import { Partial2 } from "cms/dist/itemTypeBuilder";
 import { HTTPError } from "cms/dist/server/types/httpError";
-import { createId } from ".";
 import { createId, getPaginatedRows } from ".";
 import { editorType, listType } from "../itemTypes/person";
 
@@ -89,7 +87,7 @@ export class PersonsRepo {
         return id;
     }
 
-    public async updateItem(id: string, values: Partial2<typeof editorType.t>) {
+    public async updateItem(id: string, values: typeof editorType.tPartial) {
         const old = await this.getItem(id);
 
         if (!old) {
