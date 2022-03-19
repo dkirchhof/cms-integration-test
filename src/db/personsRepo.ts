@@ -1,6 +1,4 @@
 import { Partial2 } from "cms/dist/itemTypeBuilder";
-import { HTTPError } from "cms/dist/server/types/httpError";
-import { createId } from ".";
 import { createId, getPaginatedRows } from ".";
 import { editorType, listType } from "../itemTypes/person";
 
@@ -93,9 +91,9 @@ export class PersonsRepo {
         const old = await this.getItem(id);
 
         if (!old) {
-            throw new HTTPError(404, "Couldn't find item.");
+            throw new Error("Couldn't find item.");
         }
-        
+
         const { job, ...nonLocalizedValues } = values;
 
         Object.assign(old, nonLocalizedValues);

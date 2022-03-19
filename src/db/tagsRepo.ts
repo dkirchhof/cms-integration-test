@@ -1,6 +1,4 @@
 import { Partial2 } from "cms/dist/itemTypeBuilder";
-import { HTTPError } from "cms/dist/server/types/httpError";
-import { createId } from ".";
 import { createId, getPaginatedRows } from ".";
 import { locales } from "..";
 import { editorType, listType } from "../itemTypes/tag";
@@ -56,9 +54,9 @@ export class TagsRepo {
         const old = await this.getItem(id);
 
         if (!old) {
-            throw new HTTPError(404, "Couldn't find item.");
+            throw new Error("Couldn't find item.");
         }
-        
+
         Object.assign(old.name, values.name);
     }
 
