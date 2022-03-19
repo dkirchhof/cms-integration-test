@@ -6,6 +6,19 @@ export const createId = (typeName: string) => {
     return typeName + Math.random().toFixed(8).slice(2);
 };
 
+export const getPaginatedRows = (rows: any[], page?: number, pageSize?: number) => {
+    if (page && pageSize) {
+        // 1, 10 => 0..9
+        // 2, 10 => 10..19
+        // 3, 10 => 20..29
+        const offset = (page - 1) * pageSize;
+
+        return rows.slice(offset, offset + pageSize)
+    }
+
+    return rows;
+};
+
 export const getRepos = () => {
     const repos = {
         personsRepo: new PersonsRepo(),

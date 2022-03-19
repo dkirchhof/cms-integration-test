@@ -52,7 +52,7 @@ export const person = itemTypeBuilder.createItemType({
     editorType,
 
     api: {
-        getList: () => getRepos().personsRepo.getList(),
+        getList: (page, pageSize) => getRepos().personsRepo.getList(page, pageSize),
         getItem: id => getRepos().personsRepo.getItem(id),
 
         createItem: values => getRepos().personsRepo.createItem(values),

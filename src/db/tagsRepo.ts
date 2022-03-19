@@ -1,6 +1,7 @@
 import { Partial2 } from "cms/dist/itemTypeBuilder";
 import { HTTPError } from "cms/dist/server/types/httpError";
 import { createId } from ".";
+import { createId, getPaginatedRows } from ".";
 import { locales } from "..";
 import { editorType, listType } from "../itemTypes/tag";
 
@@ -16,19 +17,28 @@ export class TagsRepo {
         },
     ];
 
-    public async getList() {
-        return this.rows.map(row => {
-            const item: typeof listType.t = {
-                id: row.id,
-                name: row.name[locales[0]],
-            };
+    public async getList(page?: number, pageSize?: number) {
+        return {
+            items: getPaginatedRows(this.rows, page, pageSize).map(row => {
+                const item: typeof listType.t = {
+                    id: row.id,
+                    name: row.name[locales[0]],
+                };
 
-            return item;
-        });
+                return item;
+            }),
+            count: this.rows.length,
+        };
     }
 
     public async getItem(id: string) {
-        return this.rows.find(row => row.id === id);
+        const item = this.rows.find(row => row.id === id);
+
+        if (!item) {
+            throw new Error("Couldn't find item.");
+        }
+
+        return item;
     }
 
     public async createItem(values: typeof editorType.t) {

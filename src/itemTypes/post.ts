@@ -1,7 +1,9 @@
+import { itemSelectorFactory } from "cms/dist/editor/editors/itemSelector";
 import { textEditorFactory } from "cms/dist/editor/editors/textEditor";
 import { notEmpty } from "cms/dist/validators/stringValidators";
 import { itemTypeBuilder } from "..";
 import { getRepos } from "../db";
+import { person } from "./person";
 
 export const listType = itemTypeBuilder.createListType(["slug", "title"]);
 
@@ -18,12 +20,13 @@ export const editorType = itemTypeBuilder.createEditorType({
         defaultValue: "",
         validators: [notEmpty],
     },
-    // authorId: {
-    //     label: "Author",
-    //     editor: itemSelectorFactory({ itemTypeConfig: authorItemType }),
-    //     defaultValue: "",
-    //     validators: [],
-    // },
+    authorId: {
+        localize: false,
+        label: "Author",
+        editor: itemSelectorFactory({ itemTypeConfig: person }),
+        defaultValue: "",
+        validators: [],
+    },
     // tagIds: {
     //     label: "Tags",
     //     editor: itemsSelectorFactory({ itemTypeConfig: tagItemType }),
@@ -55,49 +58,3 @@ export const post = itemTypeBuilder.createItemType({
         deleteItem: id => getRepos().postsRepo.deleteItem(id),
     }
 });
-
-            // getEditableItem: async id => {
-            //     const post = await getRepos().postsRepo.getOne(id);
-
-            //     const tagIds = await getTagsOfPost(id);
-
-            //     return {
-            //         ...post,
-            //         tagIds,
-            //     };
-            // },
-            // createItem: async values => {
-            //     const postEntity: IPostEntity = {
-            //         authorId: values.authorId,
-            //         content: values.content,
-            //         id: values.id,
-            //         slug: values.slug,
-            //         title: values.title,
-            //         createdAt: new Date().toUTCString(),
-            //         updatedAt: new Date().toUTCString(),
-            //     };
-
-            //     const id = await getRepos().postsRepo.create(postEntity);
-
-            //     await setTagsForPost(id, values.tagIds);
-
-            //     return id;
-            // },
-            // updateItem: async (id, values) => {
-            //     const postEntity: Partial<IPostEntity> = {
-            //         ...values,
-            //         updatedAt: new Date().toUTCString(),
-            //     };
-
-            //     await getRepos().postsRepo.update(id, postEntity);
-
-            //     if (values.tagIds) {
-            //         await setTagsForPost(id, values.tagIds);
-            //     }
-            // },
-            // deleteItem: getRepos().postsRepo.delete,
-        // },
-    // },
-
-    // frontend: {
-// };
