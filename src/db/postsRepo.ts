@@ -13,51 +13,51 @@ export class PostsRepo {
             // updatedAt: new Date().toUTCString(),
             authorId: "p1",
             tagIds: ["tag1", "tag2"],
-            // content: [
-            //     {
-            //         blockName: "Header",
-            //         id: "aaa",
-            //         data: {
-            //             imgSrc: "https://i.picsum.photos/id/60/1000/300.jpg?hmac=WmF-em1XlDmu1mGUw-jMk9g4Qr2mbIgTXGCVx03vWfE",
-            //             imgAlt: "desk",
-            //         },
-            //     },
-            //     {
-            //         blockName: "ContentLimitation",
-            //         id: "bbb",
-            //         data: {
-            //             maxWidth: 800,
-            //             children: [
-            //                 {
-            //                     blockName: "Paragraph",
-            //                     id: "ccc",
-            //                     data: { text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." },
-            //                 },
-            //                 {
-            //                     blockName: "Paragraph",
-            //                     id: "ddd",
-            //                     data: { text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." }
-            //                 },
-            //                 {
-            //                     blockName: "Image",
-            //                     id: "eee",
-            //                     data: { src: "https://i.picsum.photos/id/101/200/200.jpg?hmac=8aiHS9K78DvBexQ7ZROLuLizDR22o8CcjRMUhHbZU6g", alt: "test bild" },
-            //                 },
-            //                 {
-            //                     blockName: "Columns",
-            //                     id: "fff",
-            //                     data: {
-            //                         gap: 10,
-            //                         children: [
-            //                             { blockName: "Paragraph", id: "ggg", data: { text: "column 1" } },
-            //                             { blockName: "Paragraph", id: "hhh", data: { text: "column 2" } },
-            //                         ],
-            //                     },
-            //                 },
-            //             ],
-            //         },
-            //     },
-            // ],
+            content: [
+                // {
+                //     blockName: "Header",
+                //     id: "aaa",
+                //     data: {
+                //         imgSrc: "https://i.picsum.photos/id/60/1000/300.jpg?hmac=WmF-em1XlDmu1mGUw-jMk9g4Qr2mbIgTXGCVx03vWfE",
+                //         imgAlt: "desk",
+                //     },
+                // },
+                {
+                    blockName: "ContentLimitation",
+                    id: "bbb",
+                    data: {
+                        maxWidth: 800,
+                        children: [
+                            {
+                                blockName: "Paragraph",
+                                id: "ccc",
+                                data: { text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." },
+                            },
+                            {
+                                blockName: "Paragraph",
+                                id: "ddd",
+                                data: { text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." }
+                            },
+                            {
+                                blockName: "Image",
+                                id: "eee",
+                                data: { src: "https://i.picsum.photos/id/101/200/200.jpg?hmac=8aiHS9K78DvBexQ7ZROLuLizDR22o8CcjRMUhHbZU6g", alt: "test bild" },
+                            },
+                            {
+                                blockName: "Columns",
+                                id: "fff",
+                                data: {
+                                    gap: 10,
+                                    children: [
+                                        { blockName: "Paragraph", id: "ggg", data: { text: "column 1" } },
+                                        { blockName: "Paragraph", id: "hhh", data: { text: "column 2" } },
+                                    ],
+                                },
+                            },
+                        ],
+                    },
+                },
+            ],
         },
     ];
 
@@ -97,6 +97,7 @@ export class PostsRepo {
             // updatedAt: new Date().toUTCString(),
             authorId: values.authorId,
             tagIds: values.tagIds,
+            content: values.content,
         });
 
         return id;
@@ -118,6 +119,10 @@ export class PostsRepo {
 
         if (values.tagIds) {
             old.tagIds = values.tagIds;
+        }
+
+        if (values.content) {
+            old.content = values.content;
         }
 
         // old.updatedAt = new Date().toUTCString();

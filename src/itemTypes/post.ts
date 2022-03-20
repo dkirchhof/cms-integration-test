@@ -1,7 +1,9 @@
 import { itemSelectorFactory, itemsSelectorFactory } from "cms/dist/editor/editors/itemSelector";
 import { textEditorFactory } from "cms/dist/editor/editors/textEditor";
+import { visualBlockEditorFactory } from "cms/dist/editor/editors/visualBlockEditor";
 import { notEmpty } from "cms/dist/validators/stringValidators";
 import { itemTypeBuilder } from "..";
+import { blockConfigs } from "../blocks";
 import { getRepos } from "../db";
 import { person } from "./person";
 import { tag } from "./tag";
@@ -33,12 +35,12 @@ export const editorType = itemTypeBuilder.createEditorType({
         defaultValue: [] as string[],
         validators: [],
     },
-    // content: {
-    //     fullscreen: true,
-    //     editor: visualBlockEditorFactory({ blockConfigs }),
-    //     defaultValue: [],
-    //     validators: [],
-    // }
+    content: {
+        localize: false,
+        editor: visualBlockEditorFactory({ blockConfigs }),
+        defaultValue: [],
+        validators: [],
+    }
 });
 
 export const post = itemTypeBuilder.createItemType({
