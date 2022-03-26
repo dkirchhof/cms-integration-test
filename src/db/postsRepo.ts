@@ -54,7 +54,6 @@ export class PostsRepo {
     ];
 
     public async getPostBySlug(slug: string, locale: typeof locales.t) {
-        console.log(slug, locale)
         return this.rows.find(post => post.slug[locale] === slug);
     }
 

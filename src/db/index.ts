@@ -6,7 +6,7 @@ export const createId = (typeName: string) => {
     return typeName + Math.random().toFixed(8).slice(2);
 };
 
-export const getPaginatedRows = (rows: any[], page?: number, pageSize?: number) => {
+export const getPaginatedRows = <T>(rows: T[], page?: number, pageSize?: number) => {
     if (page && pageSize) {
         // 1, 10 => 0..9
         // 2, 10 => 10..19
