@@ -1,30 +1,46 @@
 import { VisualBlockRenderer } from "cms/dist/frontend";
+import { IBlock } from "cms/dist/types/block";
 import { NextPageContext } from "next";
+import { cms } from "..";
 import { blockConfigs } from "../blocks";
 import { getRepos } from "../db";
-import { IPostEntity } from "../types/post";
 
-const Post = (props: { post: IPostEntity; }) => (
-    <div suppressHydrationWarning>
-        <VisualBlockRenderer blockConfigs={blockConfigs} ctx={props.post} root={props.post.content} />
-    </div>
-);
+interface IPost {
+    slug: string;
+    title: string;
+    content: IBlock[];
+}
+
+const Post = (props: { post: IPost; }) => {
+    return (
+        <div suppressHydrationWarning>
+            <h1>{props.post.title}</h1>
+            <VisualBlockRenderer blockConfigs={blockConfigs} blocks={props.post.content} />
+        </div>
+    );
+};
 
 export default Post;
 
 export async function getServerSideProps(context: NextPageContext) {
-    const posts = await getRepos().postsRepo.getAll();
-    const post = posts.find(post => post.slug === context.query.slug);
-    
-    if (!post) {
+    const locale = cms.getCurrentLocale(context);
+    const row = await getRepos().postsRepo.getPostBySlug(context.query.slug as string, locale);
+
+    if (!row) {
         return {
             notFound: true,
         };
     }
 
+    const post: IPost = {
+        slug: row.slug[locale],
+        title: row.title[locale],
+        content: row.content,
+    };
+
     return {
         props: {
             post,
-        }, 
+        },
     };
 };

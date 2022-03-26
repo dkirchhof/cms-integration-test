@@ -10,7 +10,7 @@ export class PersonsRepo {
             lastname: "Doe",
             email: "john@doe.com",
             age: 30,
-            job: { "en-US": "Developer", "de-DE": "Entwickler" },
+            job: { "en": "Developer", "de": "Entwickler" },
         },
         {
             id: "p2",
@@ -18,7 +18,7 @@ export class PersonsRepo {
             lastname: "Mustermann",
             email: "max@mustermann.de",
             age: 34,
-            job: { "en-US": "Editor", "de-DE": "Redakteur" },
+            job: { "en": "Editor", "de": "Redakteur" },
         },
         {
             id: "p3",
@@ -26,7 +26,7 @@ export class PersonsRepo {
             lastname: "Mustermann",
             email: "max@mustermann.de",
             age: 34,
-            job: { "en-US": "Editor", "de-DE": "Redakteur" },
+            job: { "en": "Editor", "de": "Redakteur" },
         },
         {
             id: "p4",
@@ -34,7 +34,7 @@ export class PersonsRepo {
             lastname: "Mustermann",
             email: "max@mustermann.de",
             age: 34,
-            job: { "en-US": "Editor", "de-DE": "Redakteur" },
+            job: { "en": "Editor", "de": "Redakteur" },
         },
         {
             id: "p5",
@@ -42,7 +42,7 @@ export class PersonsRepo {
             lastname: "Mustermann",
             email: "max@mustermann.de",
             age: 34,
-            job: { "en-US": "Editor", "de-DE": "Redakteur" },
+            job: { "en": "Editor", "de": "Redakteur" },
         },
     ];
 

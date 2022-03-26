@@ -7,15 +7,15 @@ export class TagsRepo {
     private rows = [
         {
             id: "tag1",
-            name: { "en-US": "Tag one", "de-DE": "Tag eins" },
+            name: { "en": "Tag one", "de": "Tag eins" },
         },
         {
             id: "tag2",
-            name: { "en-US": "Tag two", "de-DE": "Tag zwei" },
+            name: { "en": "Tag two", "de": "Tag zwei" },
         },
         {
             id: "tag3",
-            name: { "en-US": "Tag three", "de-DE": "Tag drei" },
+            name: { "en": "Tag three", "de": "Tag drei" },
         },
     ];
 
@@ -24,7 +24,7 @@ export class TagsRepo {
             items: getPaginatedRows(this.rows, page, pageSize).map(row => {
                 const item: typeof listType.t = {
                     id: row.id,
-                    name: row.name[locales[0]],
+                    name: row.name[locales.locales[0]],
                 };
 
                 return item;

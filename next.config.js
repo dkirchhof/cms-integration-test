@@ -7,5 +7,13 @@ module.exports = {
         config.resolve.symlinks = false;
 
         return config
-    }
+    },
+
+    i18n: {
+        locales: [
+            "en",
+            "de",
+        ],
+        defaultLocale: "en",
+    },
 }
