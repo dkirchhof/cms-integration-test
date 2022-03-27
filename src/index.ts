@@ -1,10 +1,5 @@
-import { createLocales } from "cms/dist/types/i18n";
 import { createCMS, createItemTypeBuilder } from "cms/dist/";
+import { i18n } from "./modules/i18n";
 
-export const locales = createLocales([
-    "en",
-    "de",
-]);
-
-export const itemTypeBuilder = createItemTypeBuilder(locales);
-export const cms = createCMS(locales);
+export const itemTypeBuilder = createItemTypeBuilder(i18n.locales);
+export const cms = createCMS(i18n.locales);

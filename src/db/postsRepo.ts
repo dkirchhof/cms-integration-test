@@ -1,7 +1,7 @@
 import { HTTPError } from "cms/dist/server/types/httpError";
 import { createId, getPaginatedRows } from ".";
-import { locales } from "..";
-import { editorType, listType } from "../itemTypes/post";
+import { i18n } from "../modules/i18n";
+import { Post } from "../modules/post";
 
 export class PostsRepo {
     private rows = [
@@ -53,21 +53,13 @@ export class PostsRepo {
         },
     ];
 
-    public async getPostBySlug(slug: string, locale: typeof locales.t) {
+    public async getPostBySlug(slug: string, locale: i18n.Locales) {
         return this.rows.find(post => post.slug[locale] === slug);
     }
 
     public async getList(page?: number, pageSize?: number) {
         return {
-            items: getPaginatedRows(this.rows, page, pageSize).map(row => {
-                const item: typeof listType.t = {
-                    id: row.id,
-                    slug: row.slug[locales.locales[0]],
-                    title: row.title[locales.locales[0]],
-                };
-
-                return item;
-            }),
+            items: getPaginatedRows(this.rows, page, pageSize).map(Post.entityToListItem(i18n.defaultLocale)),
             count: this.rows.length,
         };
     }
@@ -82,7 +74,7 @@ export class PostsRepo {
         return item;
     }
 
-    public async createItem(values: typeof editorType.t) {
+    public async createItem(values: Post.ItemType.EditorType) {
         const id = createId("post");
 
         this.rows.push({
@@ -99,7 +91,7 @@ export class PostsRepo {
         return id;
     }
 
-    public async updateItem(id: string, values: typeof editorType.tPartial) {
+    public async updateItem(id: string, values: Post.ItemType.PartialEditorType) {
         const old = await this.getItem(id);
 
         if (!old) {

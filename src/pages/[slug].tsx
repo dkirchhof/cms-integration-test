@@ -9,6 +9,8 @@ interface IPost {
     slug: string;
     title: string;
     content: IBlock[];
+    author: { id: string; firstname: string; lastname: string; email: string; job: string; }
+    tags: { id: string; name: string; }[];
 }
 
 const Post = (props: { post: IPost; }) => {
@@ -16,6 +18,15 @@ const Post = (props: { post: IPost; }) => {
         <div suppressHydrationWarning>
             <h1>{props.post.title}</h1>
             <VisualBlockRenderer blockConfigs={blockConfigs} blocks={props.post.content} />
+            <div>
+                {props.post.author.firstname}
+                {props.post.author.lastname}
+                {props.post.author.email}
+                {props.post.author.job}
+            </div>
+            <ul>
+                {props.post.tags.map(tag => <li key={tag.id}>{tag.name}</li>)}
+            </ul>
         </div>
     );
 };
@@ -24,18 +35,29 @@ export default Post;
 
 export async function getServerSideProps(context: NextPageContext) {
     const locale = cms.getCurrentLocale(context);
-    const row = await getRepos().postsRepo.getPostBySlug(context.query.slug as string, locale);
+    const postRow = await getRepos().postsRepo.getPostBySlug(context.query.slug as string, locale);
 
-    if (!row) {
+    if (!postRow) {
         return {
             notFound: true,
         };
     }
 
+    const personRow = await getRepos().personsRepo.getPersonById(postRow.authorId);
+    
+    if (!personRow) {
+        throw new Error("error");
+    }
+
+    const tagRows = await getRepos().tagsRepo.getTagsByIds(postRow.tagIds); 
+
+
     const post: IPost = {
-        slug: row.slug[locale],
-        title: row.title[locale],
-        content: row.content,
+        slug: postRow.slug[locale],
+        title: postRow.title[locale],
+        content: postRow.content,
+        author: { id: personRow.id, firstname: personRow.firstname, lastname: personRow.lastname, email: personRow.email, job: personRow.job[locale] },
+        tags: tagRows.map(row => ({ id: row.id, name: row.name[locale] })),
     };
 
     return {

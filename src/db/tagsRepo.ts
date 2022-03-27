@@ -1,10 +1,10 @@
 import { HTTPError } from "cms/dist/server/types/httpError";
 import { createId, getPaginatedRows } from ".";
-import { locales } from "..";
-import { editorType, listType } from "../itemTypes/tag";
+import { i18n } from "../modules/i18n";
+import { Tag } from "../modules/tag";
 
 export class TagsRepo {
-    private rows = [
+    private rows: Tag.IEntity[] = [
         {
             id: "tag1",
             name: { "en": "Tag one", "de": "Tag eins" },
@@ -19,16 +19,14 @@ export class TagsRepo {
         },
     ];
 
+    public async getTagsByIds(ids: string[]) {
+        return this.rows.filter(row => ids.includes(row.id));
+    }
+
     public async getList(page?: number, pageSize?: number) {
         return {
-            items: getPaginatedRows(this.rows, page, pageSize).map(row => {
-                const item: typeof listType.t = {
-                    id: row.id,
-                    name: row.name[locales.locales[0]],
-                };
-
-                return item;
-            }),
+            items: getPaginatedRows(this.rows, page, pageSize)
+                .map(row => Tag.getLocalizedEntity(row, i18n.defaultLocale)),
             count: this.rows.length,
         };
     }
@@ -43,7 +41,7 @@ export class TagsRepo {
         return item;
     }
 
-    public async createItem(values: typeof editorType.t) {
+    public async createItem(values: Tag.ItemType.EditorType) {
         const id = createId("tag");
 
         this.rows.push({
@@ -54,13 +52,13 @@ export class TagsRepo {
         return id;
     }
 
-    public async updateItem(id: string, values: typeof editorType.tPartial) {
+    public async updateItem(id: string, values: Tag.ItemType.PartialEditorType) {
         const old = await this.getItem(id);
 
         if (!old) {
             throw new HTTPError(404, "Couldn't find item.");
         }
-        
+
         Object.assign(old.name, values.name);
     }
 

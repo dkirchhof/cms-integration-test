@@ -1,5 +1,11 @@
-import { person } from "./person";
-import { post } from "./post";
-import { tag } from "./tag";
+// import first
+import { Post } from "../modules/post";
 
-export const itemTypes = [person, tag, post];
+import { Person } from "../modules/person";
+import { Tag } from "../modules/tag";
+
+export const itemTypes = [
+    Person.ItemType.itemType,
+    Tag.ItemType.itemType, 
+    Post.ItemType.itemType,
+];

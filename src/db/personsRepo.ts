@@ -1,6 +1,6 @@
 import { HTTPError } from "cms/dist/server/types/httpError";
 import { createId, getPaginatedRows } from ".";
-import { editorType, listType } from "../itemTypes/person";
+import { Person } from "../modules/person";
 
 export class PersonsRepo {
     private rows = [
@@ -46,18 +46,13 @@ export class PersonsRepo {
         },
     ];
 
+    public async getPersonById(id: string) {
+        return this.rows.find(row => row.id === id);
+    }
+
     public async getList(page?: number, pageSize?: number) {
         return {
-            items: getPaginatedRows(this.rows, page, pageSize).map(row => {
-                const item: typeof listType.t = {
-                    id: row.id,
-                    firstname: row.firstname,
-                    lastname: row.lastname,
-                    email: row.email,
-                };
-
-                return item;
-            }),
+            items: getPaginatedRows(this.rows, page, pageSize).map(Person.entityToListItem),
             count: this.rows.length,
         };
     }
@@ -72,7 +67,7 @@ export class PersonsRepo {
         return item;
     }
 
-    public async createItem(values: typeof editorType.t) {
+    public async createItem(values: Person.ItemType.EditorType) {
         const id = createId("tag");
 
         this.rows.push({
@@ -87,7 +82,7 @@ export class PersonsRepo {
         return id;
     }
 
-    public async updateItem(id: string, values: typeof editorType.tPartial) {
+    public async updateItem(id: string, values: Person.ItemType.PartialEditorType) {
         const old = await this.getItem(id);
 
         if (!old) {

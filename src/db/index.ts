@@ -1,6 +1,6 @@
 import { PersonsRepo } from "./personsRepo";
-import { PostsRepo } from "./postsRepo";
 import { TagsRepo } from "./tagsRepo";
+import { PostsRepo } from "./postsRepo";
 
 export const createId = (typeName: string) => {
     return typeName + Math.random().toFixed(8).slice(2);
