@@ -6,7 +6,7 @@ export namespace i18n {
         "de",
     ]);
 
-    export const defaultLocale = locales.locales[0];
+    export const defaultLocale = i18n.locales.locales[0];
 
     export type Locales = typeof locales.t;
     export type Localized<T> = Localized_<T, Locales>;

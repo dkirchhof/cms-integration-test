@@ -4,10 +4,12 @@ import { NextPageContext } from "next";
 import { cms } from "..";
 import { blockConfigs } from "../blocks";
 import { getRepos } from "../db";
+import { Footer, Header } from "../styles/post";
 
 interface IPost {
     slug: string;
     title: string;
+    image: string;
     content: IBlock[];
     author: { id: string; firstname: string; lastname: string; email: string; job: string; }
     tags: { id: string; name: string; }[];
@@ -16,17 +18,28 @@ interface IPost {
 const Post = (props: { post: IPost; }) => {
     return (
         <div suppressHydrationWarning>
-            <h1>{props.post.title}</h1>
-            <VisualBlockRenderer blockConfigs={blockConfigs} blocks={props.post.content} />
-            <div>
-                {props.post.author.firstname}
-                {props.post.author.lastname}
-                {props.post.author.email}
-                {props.post.author.job}
-            </div>
-            <ul>
-                {props.post.tags.map(tag => <li key={tag.id}>{tag.name}</li>)}
-            </ul>
+            <Header>
+                <img src={props.post.image} />
+                <div>
+                    <h1>{props.post.title}</h1>
+                </div>
+            </Header>
+
+            <main>
+                <VisualBlockRenderer blockConfigs={blockConfigs} blocks={props.post.content} />
+            </main>
+            
+            <Footer>
+                <ul>
+                    {props.post.tags.map(tag => <li key={tag.id}>{tag.name}</li>)}
+                </ul>
+
+                <div>
+                    <div>{props.post.author.firstname} {props.post.author.lastname}</div>
+                    <div>{props.post.author.job}</div>
+                    <a href={`mailto: ${props.post.author.email}`}>{props.post.author.email}</a> 
+                </div>
+            </Footer>
         </div>
     );
 };
@@ -55,6 +68,7 @@ export async function getServerSideProps(context: NextPageContext) {
     const post: IPost = {
         slug: postRow.slug[locale],
         title: postRow.title[locale],
+        image: postRow.image,
         content: postRow.content,
         author: { id: personRow.id, firstname: personRow.firstname, lastname: personRow.lastname, email: personRow.email, job: personRow.job[locale] },
         tags: tagRows.map(row => ({ id: row.id, name: row.name[locale] })),

@@ -4,11 +4,12 @@ import { i18n } from "../modules/i18n";
 import { Post } from "../modules/post";
 
 export class PostsRepo {
-    private rows = [
+    private rows: Post.IEntity[] = [
         {
             id: "post1",
             slug: { "en": "first-post", "de": "erster-artikel" },
             title: { "en": "My first Post", "de": "Mein erster Artikel" },
+            image: "https://i.picsum.photos/id/878/1280/720.jpg?hmac=KtX8lPqX3wST-7EH0PYrrd1vbQGigyGzU19Qy3mbrc0",
             // createdAt: new Date().toUTCString(),
             // updatedAt: new Date().toUTCString(),
             authorId: "p1",
@@ -81,6 +82,7 @@ export class PostsRepo {
             id,
             slug: values.slug,
             title: values.title,
+            image: values.image,
             // createdAt: new Date().toUTCString(),
             // updatedAt: new Date().toUTCString(),
             authorId: values.authorId,

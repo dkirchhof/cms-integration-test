@@ -15,6 +15,7 @@ export namespace Post {
         id: string;
         slug: i18n.Localized<string>;
         title: i18n.Localized<string>;
+        image: string;
         // createdAt: new Date().toUTCString(),
         // updatedAt: new Date().toUTCString(),
         authorId: string;
@@ -38,6 +39,12 @@ export namespace Post {
                 defaultValue: "",
                 validators: [notEmpty],
             },
+            image: {
+                localize: false,
+                editor: textEditorFactory(),
+                defaultValue: "",
+                validators: [notEmpty],
+            },
             authorId: {
                 localize: false,
                 editor: itemSelectorFactory({ itemType: Person.ItemType.itemType }),
@@ -53,7 +60,7 @@ export namespace Post {
             content: {
                 localize: false,
                 editor: visualBlockEditorFactory({ blockConfigs }),
-                defaultValue: [],
+                defaultValue: [] as IBlock[],
                 validators: [],
             }
         });
